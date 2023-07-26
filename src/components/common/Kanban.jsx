@@ -129,10 +129,12 @@ const Kanban = props => {
         <Button onClick={createSection}>
           Add section
         </Button>
+
         <Typography variant='body2' fontWeight='700'>
           {data.length} Sections
         </Typography>
       </Box>
+
       <Divider sx={{ margin: '10px 0' }} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Box sx={{
@@ -180,6 +182,7 @@ const Kanban = props => {
                         >
                           <AddOutlinedIcon />
                         </IconButton>
+
                         <IconButton
                           variant='outlined'
                           size='small'
@@ -225,6 +228,7 @@ const Kanban = props => {
           }
         </Box>
       </DragDropContext>
+      
       <TaskModal
         task={selectedTask}
         boardId={boardId}

@@ -54,18 +54,7 @@ const Signup = () => {
       localStorage.setItem('token', res.token)
       navigate('/')
     } catch (err) {
-      const errors = err.data.errors
-      errors.forEach(e => {
-        if (e.param === 'username') {
-          setUsernameErrText(e.msg)
-        }
-        if (e.param === 'password') {
-          setPasswordErrText(e.msg)
-        }
-        if (e.param === 'confirmPassword') {
-          setConfirmPasswordErrText(e.msg)
-        }
-      })
+      console.log(err);
       setLoading(false)
     }
   }

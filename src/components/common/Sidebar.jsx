@@ -7,7 +7,6 @@ import assets from '../../assets/index'
 import { useEffect, useState } from 'react'
 import boardApi from '../../api/boardApi'
 import { setBoards } from '../../redux/features/boardSlice'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import FavouriteList from './FavouriteList'
 
 const Sidebar = () => {
@@ -43,22 +42,6 @@ const Sidebar = () => {
   const logout = () => {
     localStorage.removeItem('token')
     navigate('/login')
-  }
-
-  const onDragEnd = async ({ source, destination }) => {
-    const newList = [...boards]
-    const [removed] = newList.splice(source.index, 1)
-    newList.splice(destination.index, 0, removed)
-
-    const activeItem = newList.findIndex(e => e.id === boardId)
-    setActiveIndex(activeItem)
-    dispatch(setBoards(newList))
-
-    try {
-      await boardApi.updatePositoin({ boards: newList })
-    } catch (err) {
-      alert(err)
-    }
   }
 
   const addBoard = async () => {
@@ -106,9 +89,13 @@ const Sidebar = () => {
             </IconButton>
           </Box>
         </ListItem>
+
         <Box sx={{ paddingTop: '10px' }} />
+
         <FavouriteList />
+
         <Box sx={{ paddingTop: '10px' }} />
+
         <ListItem>
           <Box sx={{
             width: '100%',
@@ -119,50 +106,38 @@ const Sidebar = () => {
             <Typography variant='body2' fontWeight='700'>
               Private
             </Typography>
+
             <IconButton onClick={addBoard}>
               <AddBoxOutlinedIcon fontSize='small' />
             </IconButton>
           </Box>
+          <hr />
         </ListItem>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable key={'list-board-droppable-key'} droppableId={'list-board-droppable'}>
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {
-                  boards.map((item, index) => (
-                    <Draggable key={item.id} draggableId={item.id} index={index}>
-                      {(provided, snapshot) => (
-                        <ListItemButton
-                          ref={provided.innerRef}
-                          {...provided.dragHandleProps}
-                          {...provided.draggableProps}
-                          selected={index === activeIndex}
-                          component={Link}
-                          to={`/boards/${item.id}`}
-                          sx={{
-                            pl: '20px',
-                            cursor: snapshot.isDragging ? 'grab' : 'pointer!important'
-                          }}
-                        >
-                          <Typography
-                            variant='body2'
-                            fontWeight='700'
-                            sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                          >
-                            {item.icon} {item.title}
-                          </Typography>
-                        </ListItemButton>
-                      )}
-                    </Draggable>
-                  ))
-                }
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+
+        {boards.map((item, idx) => (
+          <ListItem key={idx}>
+            <ListItemButton
+              selected={idx === activeIndex}
+              component={Link}
+              to={`/boards/${item.id}`}
+              sx={{
+                pl: '0px',
+                ml: '0px',
+                cursor: 'pointer!important'
+              }}
+            >
+              <Typography
+                variant='body2'
+                fontWeight='700'
+                sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+              >
+                {item.icon} {item.title}
+              </Typography>
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
-    </Drawer>
+    </Drawer >
   )
 }
 

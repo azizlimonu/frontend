@@ -157,10 +157,12 @@ const Board = () => {
             )
           }
         </IconButton>
+
         <IconButton variant='outlined' color='error' onClick={deleteBoard}>
           <DeleteOutlinedIcon />
         </IconButton>
       </Box>
+
       <Box sx={{ padding: '10px 50px' }}>
         <Box>
           {/* emoji picker */}
@@ -191,6 +193,7 @@ const Board = () => {
             }}
           />
         </Box>
+        
         <Box>
           {/* Kanban board */}
           <Kanban data={sections} boardId={boardId} />
