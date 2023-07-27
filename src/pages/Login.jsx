@@ -1,14 +1,16 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, IconButton, InputAdornment, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
 import authApi from '../api/authApi'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const Login = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [usernameErrText, setUsernameErrText] = useState('')
   const [passwordErrText, setPasswordErrText] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -79,10 +81,23 @@ const Login = () => {
           id='password'
           label='Password'
           name='password'
-          type='password'
+          type={showPassword ? 'text' : 'password'}
           disabled={loading}
           error={passwordErrText !== ''}
           helperText={passwordErrText}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label='toggle password visibility'
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge='end'
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <LoadingButton
           sx={{ mt: 3, mb: 2 }}

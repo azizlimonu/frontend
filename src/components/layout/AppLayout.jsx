@@ -24,7 +24,7 @@ const AppLayout = () => {
       }
     }
     checkAuth()
-  }, [dispatch, navigate])
+  }, [dispatch, navigate]);
 
   return (
     loading ? (
